@@ -6,7 +6,7 @@ Release:	1
 Copyright:	GPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source0:	http://download.sourceforge.net/libnurbs/nurbs++-%{version}.tar.bz2
+Source0:	ftp://download.sourceforge.net/pub/sourceforge/libnurbs/nurbs++-%{version}.tar.bz2
 #Patch0:		
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
