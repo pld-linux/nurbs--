@@ -46,7 +46,7 @@ Requires:	%{name} = %{version}
 %description devel
 NURBS++ library header files.
 
-%description -l pl devel
+%description devel -l pl
 Pliki nag³ówkowe dla biblioteki NURBS++.
 
 %package static
@@ -58,7 +58,7 @@ Requires:	%{name}-devel = %{version}
 %description static
 Static version of NURBS++ library.
 
-%description -l pl static
+%description static -l pl
 Statyczna wersja biblioteki NURBS++.
 
 %prep
@@ -82,8 +82,8 @@ automake -a -c
 	--enable-double \
 	--with-opengl \
 	--with-magick \
-	--disable-debug 
-    
+	--disable-debug
+
 %{__make}
 
 %install
