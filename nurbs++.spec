@@ -11,6 +11,7 @@ Patch0:		%{name}-templates.patch
 Patch1:		%{name}-link.patch
 Patch2:		%{name}-magick.patch
 Patch3:		%{name}-config.patch
+Patch4:		%{name}-gcc33.patch
 URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	ImageMagick-devel >= 5.2.9
 BuildRequires:	OpenGL-devel
@@ -69,6 +70,7 @@ Statyczna wersja biblioteki NURBS++.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 rm -f missing
