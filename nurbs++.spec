@@ -7,12 +7,11 @@ Copyright:	GPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source0:	ftp://download.sourceforge.net/pub/sourceforge/libnurbs/nurbs++-%{version}.tar.bz2
-#Patch0:		
+Patch0:		nurbs++-remove-nurbsGL.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
 BuildRequires:	ImageMagick-devel >= 4.2.8
-#BuildRequires:	
-#Requires:	
+Provides:	nurbs++
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define	_prefix	/usr/X11R6
@@ -48,11 +47,16 @@ Statycznie linkowana wersja biblioteki libNURBS++
 %prep
 %setup -q -n nurbs++-%{version}
 
-#%patch
+%patch0 -p0
 
 %build
 CXXFLAGS="-O2 -mpentium"
 export CXXFLAGS
+CXX="g++"
+export CXX
+aclocal
+autoconf
+automake -a -c
 %configure \
     --enable-shared \
     --enable-static \
@@ -61,7 +65,7 @@ export CXXFLAGS
     --with-x \
     --enable-float \
     --enable-double \
-    --with-opengl=/usr/X11R6 \
+    --without-opengl \
     --without-magick \
     --disable-debug 
     
@@ -74,17 +78,17 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
-%doc
-%attr(,,)
+%attr(644,root,root) %{_libdir}/*.so*
 
 %files devel
 %defattr(644,root,root,755)
-%doc
-%attr(,,)
+%attr(644,root,root) %{_includedir}/nurbs++/*
 
 %files static
 %defattr(644,root,root,755)
-%doc
-%attr(,,)
+%attr(644,root,root) %{_libdir}/*.la
