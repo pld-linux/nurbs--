@@ -44,6 +44,7 @@ Summary:	NURBS++ library development package
 Summary(pl):	Pliki nag³ówkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
+Requires:	ImageMagick-devel >= 5.2.9
 
 %description devel
 NURBS++ library header files.
