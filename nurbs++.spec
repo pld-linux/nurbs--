@@ -18,8 +18,10 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
 BuildRequires:	ImageMagick-devel >= 5.2.9
 BuildRequires:	libstdc++-devel
+Requires:	OpenGL
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define 	_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 
 %description
