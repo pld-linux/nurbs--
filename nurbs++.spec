@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_with	cppunit	# use cppunit; doesn't build with current cppunit
+#
 Summary:	NURBS++ library
 Summary(pl):	Biblioteka NURBS++
 Name:		nurbs++
@@ -19,6 +23,9 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
 BuildRequires:	autoconf
 BuildRequires:	automake
+%if %{with cppunit}
+BuildRequires:	cppunit-devel
+%endif
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.4d-3
 Requires:	OpenGL
@@ -80,6 +87,9 @@ Statyczna wersja biblioteki NURBS++.
 %{__aclocal} -I config
 %{__autoconf}
 %{__automake}
+%if %{without cppunit}
+export has_cppunit=no
+%endif
 %configure \
 	--enable-shared \
 	--enable-static \
