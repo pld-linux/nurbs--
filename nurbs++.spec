@@ -2,7 +2,7 @@ Summary:	NURBS++ library
 Summary(pl):	Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.11
-Release:	4
+Release:	5
 License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
@@ -12,6 +12,7 @@ Patch1:		%{name}-link.patch
 Patch2:		%{name}-magick.patch
 Patch3:		%{name}-config.patch
 Patch4:		%{name}-gcc33.patch
+Patch5:		%{name}-strict_types.patch
 URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	ImageMagick-devel >= 5.2.9
 BuildRequires:	OpenGL-devel
@@ -72,6 +73,7 @@ Statyczna wersja biblioteki NURBS++.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__libtoolize}
