@@ -6,6 +6,7 @@ Release:	2
 License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
+# Source0-md5:	11aa7f2a1ae2bc3e2671d56f557fbbbf
 Patch0:		%{name}-templates.patch
 Patch1:		%{name}-link.patch
 Patch2:		%{name}-magick.patch
