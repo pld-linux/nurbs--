@@ -72,8 +72,9 @@ Statyczna wersja biblioteki NURBS++.
 %patch3 -p1
 
 %build
+rm -f missing
 #%{__libtoolize}
-aclocal -I config
+%{__aclocal} -I config
 %{__autoconf}
 %{__automake}
 %configure \
