@@ -7,8 +7,11 @@ License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
-Group(fr):	Librairies
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/Библиотеки
+Group(uk):	X11/Б╕бл╕отеки
 Source0:	ftp://download.sourceforge.net/pub/sourceforge/libnurbs/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-templates.patch
 Patch1:		%{name}-magick.patch
@@ -18,6 +21,9 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
 BuildRequires:	ImageMagick-devel >= 5.2.9
 BuildRequires:	libstdc++-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 Requires:	OpenGL
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,8 +49,12 @@ Summary:	NURBS++ library development package
 Summary(pl):	Pliki nagЁСwkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
-Group(fr):	Development/Librairies
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/Разработка/Библиотеки
+Group(uk):	X11/Розробка/Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description devel
@@ -58,8 +68,12 @@ Summary:	NURBS++ static library
 Summary(pl):	Statyczna wersja biblioteki NURBS++
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
-Group(fr):	Development/Librairies
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/Разработка/Библиотеки
+Group(uk):	X11/Розробка/Б╕бл╕отеки
 Requires:	%{name}-devel = %{version}
 
 %description static
