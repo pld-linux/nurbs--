@@ -31,7 +31,7 @@ surfaces. This C++ library hides the basic mathematics of NURBS. This
 allows the user to focus on the more challenging parts of their
 projects.
 
-%description
+%description -l pl
 Wymierne krzywe i powierzchnie sklejane NURBS (Non-Uniform Rational
 B-Splines) s± funkcjami, które mog± przedstawiaæ dowolny rodzaj
 krzywych lub powierzchni. Ta biblioteka C++ zawiera czê¶æ matematyczn±
