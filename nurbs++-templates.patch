@@ -1,0 +1,190 @@
+diff -Nur nurbs++-3.0.10.orig/nurbs/nurbsGL.cc nurbs++-3.0.10/nurbs/nurbsGL.cc
+--- nurbs++-3.0.10.orig/nurbs/nurbsGL.cc	Thu Aug  5 03:49:17 1999
++++ nurbs++-3.0.10/nurbs/nurbsGL.cc	Wed Mar 21 00:41:13 2001
+@@ -2910,7 +2910,7 @@
+   \author Philippe Lavoie
+   \date 6 November 1997
+ */
+-NurbsCurveGL& NurbsCurveGL::operator=(const NurbsCurve &a){
++NurbsCurveGL& NurbsCurveGL::operator=(const NurbsCurvef &a){
+   this->NurbsCurveSPf::operator=(a) ;
+   return *this ;
+ }
+@@ -2938,7 +2938,7 @@
+   \author Philippe Lavoie
+   \date 6 November 1997
+ */
+-NurbsSurfaceGL& NurbsSurfaceGL::operator=(const NurbsSurface &a){
++NurbsSurfaceGL& NurbsSurfaceGL::operator=(const NurbsSurfacef &a){
+   this->NurbsSurfaceSPf::operator=(a) ;
+   return *this ;
+ }
+@@ -3053,7 +3053,7 @@
+   \author Philippe Lavoie
+   \date 7 November 1997
+ */
+-HNurbsSurfaceGL::HNurbsSurfaceGL(const NurbsSurface& nS):HNurbsSurfaceSPf(nS),NurbsGL() { 
++HNurbsSurfaceGL::HNurbsSurfaceGL(const NurbsSurfacef& nS):HNurbsSurfaceSPf(nS),NurbsGL() { 
+   type = hSurfObject ; 
+   polygon = new NurbsSpolygonGL(*this) ; 
+   lod = maxLevel() ; 
+@@ -3653,7 +3653,7 @@
+ */
+ int NurbsCurveGL::read(ifstream &fin) { 
+   static int ncurves = 0 ;
+-  if(NurbsCurve::read(fin)){ 
++  if(NurbsCurvef::read(fin)){ 
+     if(!ObjectGL::read(fin)){
+       char *maxName = new char[25] ; 
+       sprintf(maxName,"curve_%d",ncurves++) ; 
+@@ -3677,7 +3677,7 @@
+ */
+ int NurbsSurfaceGL::read(ifstream &fin) { 
+   static int nsurfaces = 0 ;
+-  if(NurbsSurface::read(fin)){ 
++  if(NurbsSurfacef::read(fin)){ 
+     if(!ObjectGL::read(fin)){
+       char *maxName = new char[25] ; 
+       sprintf(maxName,"surface_%d",nsurfaces++) ; 
+@@ -3701,7 +3701,7 @@
+ */
+ int HNurbsSurfaceGL::read(ifstream &fin) { 
+   static int nhsurfaces = 0 ;
+-  if(HNurbsSurface::read(fin)){ 
++  if(HNurbsSurfacef::read(fin)){ 
+     if(!ObjectGL::read(fin)){
+       char *maxName = new char[25] ; 
+       sprintf(maxName,"hsurface_%d",nhsurfaces++) ; 
+@@ -3724,7 +3724,7 @@
+   \date 19 June 1998
+ */
+ int NurbsCurveGL::write(ofstream &fout) const {
+-  if(!NurbsCurve::write(fout))
++  if(!NurbsCurvef::write(fout))
+     return 0 ; 
+   if(!ObjectGL::write(fout))
+     return 0 ; 
+@@ -3742,7 +3742,7 @@
+   \date 19 June 1998
+ */
+ int HNurbsSurfaceGL::write(ofstream &fout) const {
+-  if(!HNurbsSurface::write(fout))
++  if(!HNurbsSurfacef::write(fout))
+     return 0 ; 
+   if(!ObjectGL::write(fout))
+     return 0 ; 
+@@ -3760,7 +3760,7 @@
+   \date 19 June 1998
+ */
+ int NurbsSurfaceGL::write(ofstream &fout) const {
+-  if(!NurbsSurface::write(fout))
++  if(!NurbsSurfacef::write(fout))
+     return 0 ; 
+   if(!ObjectGL::write(fout))
+     return 0 ; 
+@@ -3913,10 +3913,10 @@
+ #ifdef NO_IMPLICIT_TEMPLATES
+ 
+ template class list<NurbsCurve_2Df*> ;
+-template class list<NurbsCurve_2Df*>::iterator ;
++template  list<NurbsCurve_2Df*>::iterator ;
+ 
+-template void list<PLib::NurbsCurve<float, 2> *, __default_alloc_template<0, 0> >::insert<__list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *> >(__list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *&, PLib::NurbsCurve<float, 2> **>, __list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>, __list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>) ;
+-template void list<PLib::NurbsCurve<float, 2> *, __default_alloc_template<1, 0> >::insert<__list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *> >(__list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *&, PLib::NurbsCurve<float, 2> **>, __list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>, __list_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>) ;
++template void list<PLib::NurbsCurve<float, 2> *, __default_alloc_template<0, 0> >::insert<_List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *> >(_List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *&, PLib::NurbsCurve<float, 2> **>, _List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>, _List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>) ;
++template void list<PLib::NurbsCurve<float, 2> *, __default_alloc_template<1, 0> >::insert<_List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *> >(_List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *&, PLib::NurbsCurve<float, 2> **>, _List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>, _List_iterator<PLib::NurbsCurve<float, 2> *, PLib::NurbsCurve<float, 2> *const &, PLib::NurbsCurve<float, 2> *const *>) ;
+ 
+ template class RenderMeshGL<float> ;
+ 
+@@ -3930,12 +3930,12 @@
+ #endif 
+ 
+ #ifdef USING_LINUX
+-  template void* __default_alloc_template<false, 0>::free_list ;
+-  template void* __default_alloc_template<false, 0>::refill (unsigned int) ;
+-  template char* __default_alloc_template<false, 0>::chunk_alloc(unsigned int, int &);
+-  template void* __default_alloc_template<false, 0>::end_free;
+-  template void* __default_alloc_template<false, 0>::heap_size;
+-  template void* __default_alloc_template<false, 0>::start_free ;
++  template void* __default_alloc_template<false, 0>::_S_free_list ;
++  template void* __default_alloc_template<false, 0>::_S_refill (unsigned int) ;
++  template char* __default_alloc_template<false, 0>::_S_chunk_alloc(unsigned int, int &);
++  template void* __default_alloc_template<false, 0>::_S_end_free;
++  template void* __default_alloc_template<false, 0>::_S_heap_size;
++  template void* __default_alloc_template<false, 0>::_S_start_free ;
+ #endif
+ 
+ #endif
+diff -Nur nurbs++-3.0.10.orig/nurbs/nurbsGL.hh nurbs++-3.0.10/nurbs/nurbsGL.hh
+--- nurbs++-3.0.10.orig/nurbs/nurbsGL.hh	Thu Aug  5 03:49:17 1999
++++ nurbs++-3.0.10/nurbs/nurbsGL.hh	Wed Mar 21 00:42:37 2001
+@@ -88,7 +88,7 @@
+ extern Point3Df ZAxis_3D ;
+ 
+  struct NurbsSubSurfaceGL : public NurbsSubSurface<float> {
+-   NurbsSubSurfaceGL(const NurbsSurface<float,3>& s, const Color& c) : NurbsSubSurface(s), color(c) {;}
++   NurbsSubSurfaceGL(const NurbsSurface<float,3>& s, const Color& c) : NurbsSubSurface<float>(s), color(c) {;}
+    ~NurbsSubSurfaceGL() {;}
+    void drawSubdivisionGL(float tolerance) ;
+  protected:
+@@ -832,8 +832,8 @@
+ class NurbsCurveGL : public NurbsCurveSPf, public NurbsGL {
+ public:
+   NurbsCurveGL() : NurbsCurveSPf(),NurbsGL() { type = curveObject ;  polygon = new NurbsCpolygonGL(*this) ;}
+-  NurbsCurveGL(const NurbsCurve& nurb): NurbsCurveSPf(nurb),NurbsGL() { type = curveObject ; polygon = new NurbsCpolygonGL(*this) ;}
+-  NurbsCurveGL(const NurbsCurveGL& nurb): NurbsCurveSPf((NurbsCurve)nurb),NurbsGL() { type = curveObject ; polygon = new NurbsCpolygonGL(*this) ;}
++  NurbsCurveGL(const NurbsCurvef& nurb): NurbsCurveSPf(nurb),NurbsGL() { type = curveObject ; polygon = new NurbsCpolygonGL(*this) ;}
++  NurbsCurveGL(const NurbsCurveGL& nurb): NurbsCurveSPf((NurbsCurvef)nurb),NurbsGL() { type = curveObject ; polygon = new NurbsCpolygonGL(*this) ;}
+   NurbsCurveGL(const Vector<HPoint3Df>& P1, const Vector<float> &U1, int degree=3):NurbsCurveSPf(P1,U1,degree),NurbsGL() { type = curveObject ; polygon = new NurbsCpolygonGL(*this) ;}
+   NurbsCurveGL(const Vector<Point3Df>& P1, const Vector<float> &W, const Vector<float> &U1, int degree=3):NurbsCurveSPf(P1,W,U1,degree),NurbsGL() { type = curveObject ;  polygon = new NurbsCpolygonGL(*this) ;}
+ 
+@@ -870,8 +870,8 @@
+ class NurbsSurfaceGL : public NurbsSurfaceSPf, public NurbsGL  {
+ public:  
+   NurbsSurfaceGL():NurbsSurfaceSPf(),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
+-  NurbsSurfaceGL(const NurbsSurface& nS):NurbsSurfaceSPf(nS),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
+-  NurbsSurfaceGL(const NurbsSurfaceGL& nS):NurbsSurfaceSPf((NurbsSurface)nS),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
++  NurbsSurfaceGL(const NurbsSurfacef& nS):NurbsSurfaceSPf(nS),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
++  NurbsSurfaceGL(const NurbsSurfaceGL& nS):NurbsSurfaceSPf((NurbsSurfacef)nS),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
+   NurbsSurfaceGL(int DegU, int DegV, const Vector<float>& Uk, const Vector<float>& Vk, const Matrix<HPoint3Df>& Cp):NurbsSurfaceSPf(DegU,DegV,Uk,Vk,Cp),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; }
+   NurbsSurfaceGL(int DegU, int DegV, Vector<float>& Uk, Vector<float>& Vk, Matrix< Point3Df >& Cp, Matrix<float>& W):NurbsSurfaceSPf(DegU,DegV,Uk,Vk,Cp,W),NurbsGL() { type = surfaceObject ; polygon = new NurbsSpolygonGL(*this) ; image = 0 ; } ;
+   ~NurbsSurfaceGL() { if(image) delete []image ; }
+@@ -880,7 +880,7 @@
+   void point(float &u, float &v, int pSize, const Color& colorP, int cp_flag=0) const ;
+ 
+   virtual NurbsSurfaceGL& operator=(const NurbsSurfaceGL& a);
+-  virtual NurbsSurfaceGL& operator=(const NurbsSurface& a);
++  virtual NurbsSurfaceGL& operator=(const NurbsSurfacef& a);
+ 
+ 
+   void resetBoundingBox() ;
+@@ -923,7 +923,7 @@
+ class HNurbsSurfaceGL : public HNurbsSurfaceSPf, public NurbsGL  {
+ public:  
+   HNurbsSurfaceGL() ;
+-  HNurbsSurfaceGL(const NurbsSurface& nS);
++  HNurbsSurfaceGL(const NurbsSurfacef& nS);
+   HNurbsSurfaceGL(const HNurbsSurfaceGL& bS) ;
+   HNurbsSurfaceGL(const HNurbsSurfaceGL* bS);
+   virtual ~HNurbsSurfaceGL() { ; }
+@@ -954,9 +954,9 @@
+   int write(ofstream &fout) const ;
+ 
+ 
+-  int writeRIB(ofstream &fout) const { return NurbsSurface::writeRIB(fout); }
++  int writeRIB(ofstream &fout) const { return HNurbsSurfaceSPf::writeRIB(fout); }
+   //  int writePOVRAY(ofstream &fout) const { return NurbsSurface::writePOVRAY(0.1,fout); }
+-  int writePOVRAY(ofstream &fout) const { return NurbsSurface::writePOVRAY(0.1,fout); }
++  int writePOVRAY(ofstream &fout) const { return HNurbsSurfaceSPf::writePOVRAY(0.1,fout); }
+ 
+   //void applyTransform() ;
+ 
+@@ -980,7 +980,7 @@
+ 
+   void setSym(int set, int uDir, float x, float y, float z, float w) ;
+ 
+-  void axis(int i, int j, Point3Df& xaxis, Point3Df& yaxis, Point3Df& zaxis) const { activePatch->HNurbsSurface::axis(i,j,xaxis,yaxis,zaxis) ; }
++  void axis(int i, int j, Point3Df& xaxis, Point3Df& yaxis, Point3Df& zaxis) const { activePatch->HNurbsSurfacef::axis(i,j,xaxis,yaxis,zaxis) ; }
+ 
+ protected:
+   int lod ;

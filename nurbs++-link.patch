@@ -1,0 +1,108 @@
+diff -Nur nurbs++-3.0.10.orig/acinclude.m4 nurbs++-3.0.10/acinclude.m4
+--- nurbs++-3.0.10.orig/acinclude.m4	Mon Sep 13 02:40:33 1999
++++ nurbs++-3.0.10/acinclude.m4	Wed Mar 21 12:01:09 2001
+@@ -350,7 +350,7 @@
+         else
+             GL_LFLAGS="-L${ac_cv_with_gl_lib}"
+         fi
+-	GL_LIBS="-lGLU -lGL -lXext -lm"
++	GL_LIBS="-L/usr/X11R6/lib -lGLU -lGL -lXext -lm"
+         AC_SUBST(GL_LIBS)
+ 	AC_SUBST(GL_LFLAGS)
+     ],
+@@ -372,7 +372,7 @@
+         else
+             GL_LFLAGS="-L${ac_cv_with_gl_lib}"
+         fi
+-	GL_LIBS="-lMesaGLU -lMesaGL -lXext -lm"
++	GL_LIBS="-L/usr/X11R6/lib -lMesaGLU -lMesaGL -lXext -lm"
+ 	AC_SUBST(GL_LFLAGS)
+         AC_SUBST(GL_LIBS)
+     ],
+diff -Nur nurbs++-3.0.10.orig/configure.in nurbs++-3.0.10/configure.in
+--- nurbs++-3.0.10.orig/configure.in	Wed Mar 21 11:55:55 2001
++++ nurbs++-3.0.10/configure.in	Wed Mar 21 12:10:24 2001
+@@ -145,6 +145,7 @@
+ else
+ 	has_magick=yes
+ 	magick_include="-I/usr/X11R6/include/X11"
++	magick_lib="-L/usr/X11R6/lib"
+ 	if test "$with_magick" != yes; then
+ 	magick_include="-I"$with_magick"/include"
+ 	magick_lib="-L"$with_magick"/lib"
+@@ -172,13 +173,11 @@
+ fi)
+ 
+ dnl magick_libs="-lXt -lX11 -lXext -lmfhdf -ldf -lXpm -ltiff -ldpstk -ldps -ljbig -lMagick -lpng -ljpeg -lz -lmpeg -lttf "
+-magick_libs="-lmfhdf -ldf -lXpm -ltiff -ldpstk -ldps -ljbig -lMagick -lpng -ljpeg -lz -lmpeg -lttf "
++magick_libs="-lMagick "
+ 
+ AC_ARG_WITH(magick-libs,[  --with-magick-libs=library_flag           
+                           specifies which Image Magick library should be 
+-                          included [default=-lXt -lX11 -lXext -lmfhdf -ldf -lXpm
+-                           -ltiff -lz -ldpstk -ldps -ljbig
+-                           -lMagick -lpng -ljpeg -lmpeg ]],
++                          included [default=-lMagick ]],
+ if test "$with_magick_libs" != no; then
+ 	has_magick=yes
+ 	magick_libs=$with_magick_libs
+@@ -186,8 +185,8 @@
+ 
+ if test "$has_magick" = yes; then
+ AC_DEFINE(WITH_IMAGE_MAGICK)
+-option_libs=" $(MAGICK_LIB) $(MAGICK_LIBS)"
+-option_include="$(MAGICK_INCLUDE)"
++option_libs=' $(MAGICK_LIB) $(MAGICK_LIBS)'
++option_include='$(MAGICK_INCLUDE)'
+ else
+ magick_libs=" "
+ fi
+@@ -213,7 +212,7 @@
+ if test "$use_opengl" = yes; then
+ AC_DEFINE(WITH_OPENGL)
+ AC_DEFINE(COLUMN_ORDER)
+-option_libs=$option_libs' $(OPENGL_LIBS)'
++option_libs=$option_libs' $(GL_LIBS)'
+ option_include=$option_include' $(GL_CFLAGS)'
+ fi
+ 
+diff -Nur nurbs++-3.0.10.orig/image/Makefile.am nurbs++-3.0.10/image/Makefile.am
+--- nurbs++-3.0.10.orig/image/Makefile.am	Thu Aug  5 03:49:16 1999
++++ nurbs++-3.0.10/image/Makefile.am	Wed Mar 21 12:20:30 2001
+@@ -9,4 +9,4 @@
+ 
+ lib_LTLIBRARIES = libmatrixI.la
+ libmatrixI_la_SOURCES = color.cc image_.cc  rec_filter_.cc filter_.cc
+-libmatrixI_la_LDFLAGS = -version-info 1:0:0
++libmatrixI_la_LDFLAGS = -version-info 1:0:0 -L../matrix/.libs -lmatrix @magick_lib@ @magick_libs@
+diff -Nur nurbs++-3.0.10.orig/numerical/Makefile.am nurbs++-3.0.10/numerical/Makefile.am
+--- nurbs++-3.0.10.orig/numerical/Makefile.am	Thu Aug  5 03:49:16 1999
++++ nurbs++-3.0.10/numerical/Makefile.am	Wed Mar 21 12:21:07 2001
+@@ -6,5 +6,5 @@
+ 
+ lib_LTLIBRARIES = libmatrixN.la
+ libmatrixN_la_SOURCES = matrixMat_.cc fft_.cc chebexp_.cc intccq_.cc statistic_.cc
+-libmatrixN_la_LDFLAGS = -version-info 1:0:0
++libmatrixN_la_LDFLAGS = -version-info 1:0:0 -L../matrix/.libs -lmatrix
+ 
+diff -Nur nurbs++-3.0.10.orig/nurbs/Makefile.am nurbs++-3.0.10/nurbs/Makefile.am
+--- nurbs++-3.0.10.orig/nurbs/Makefile.am	Thu Aug  5 03:49:16 1999
++++ nurbs++-3.0.10/nurbs/Makefile.am	Wed Mar 21 12:24:44 2001
+@@ -10,7 +10,7 @@
+ 
+ double_sources = d_nurbs.cc d_nurbsS.cc d_curve.cc d_surface.cc d_hnurbsS.cc matrixRT.cc d_nurbs_sp.cc d_nurbsS_sp.cc d_hnurbsS_sp.cc d_nurbsArray.cc  d_nurbsSub.cc d_tri_spline.cc
+ 
+-ldflags = -version-info 1:0:1
++ldflags = -version-info 1:0:1 -L../matrix/.libs -lmatrix -L../image/.libs -lmatrixI -L../numerical/.libs -lmatrixN
+ 
+ #EXTRA_LTLIBRARIES = libnurbsf.la libnurbsd.la
+ #lib_LTLIBRARIES = @build_lib@
+@@ -44,7 +44,7 @@
+ 
+ lib_LTLIBRARIES = libnurbsf.la libnurbsd.la
+ libnurbsf_la_SOURCES = $(float_sources)
+-libnurbsf_la_LDFLAGS = $(ldflags)
++libnurbsf_la_LDFLAGS = $(ldflags) $(GL_LIBS)
+ libnurbsd_la_SOURCES = $(double_sources)
+ libnurbsd_la_LDFLAGS = $(ldflags)
+ 

@@ -1,0 +1,220 @@
+--- nurbs++-3.0.10/configure.in.orig	Mon Sep 13 02:40:07 1999
++++ nurbs++-3.0.10/configure.in	Wed Mar 21 02:03:59 2001
+@@ -144,6 +144,7 @@
+ 	has_magick=no
+ else
+ 	has_magick=yes
++	magick_include="-I/usr/X11R6/include/X11"
+ 	if test "$with_magick" != yes; then
+ 	magick_include="-I"$with_magick"/include"
+ 	magick_lib="-L"$with_magick"/lib"
+--- nurbs++-3.0.10/image/image.hh.orig	Thu Aug  5 03:49:16 1999
++++ nurbs++-3.0.10/image/image.hh	Wed Mar 21 04:05:49 2001
+@@ -107,11 +107,11 @@
+       int write(const char* filename) ;
+       
+       //Image processing functions offered by ImageMagick
+-      void despeckle() { setImage() ; image=DespeckleImage(image); setMatrix() ;}
+-      void emboss() {  setImage() ; image=EmbossImage(image) ; setMatrix() ;}
+-      void enhance() {  setImage() ; image=EnhanceImage(image) ; setMatrix() ;}
+-      void blur(double b) {  setImage() ; image=BlurImage(image,b) ; setMatrix() ;}
+-      void oilPaint(const unsigned int a) { setImage() ; image=OilPaintImage(image,a) ; setMatrix() ;}
++      void despeckle() { ExceptionInfo exc; setImage() ; image=DespeckleImage(image,&exc); setMatrix() ;}
++      void emboss() { ExceptionInfo exc; setImage() ; image=EmbossImage(image,1.0,1.0,&exc) ; setMatrix() ;}
++      void enhance() { ExceptionInfo exc; setImage() ; image=EnhanceImage(image,&exc) ; setMatrix() ;}
++      void blur(double b) { ExceptionInfo exc; setImage() ; image=BlurImage(image,b,1.0,&exc) ; setMatrix() ;}
++      void oilPaint(const unsigned int a) { ExceptionInfo exc; setImage() ; image=OilPaintImage(image,a,&exc) ; setMatrix() ;}
+       
+       
+     protected:
+--- nurbs++-3.0.10/image/image_.cc.orig	Thu Aug  5 03:49:16 1999
++++ nurbs++-3.0.10/image/image_.cc	Wed Mar 21 04:00:40 2001
+@@ -30,32 +30,34 @@
+ #if defined(WITH_IMAGE_MAGICK)
+ 
+   void IM_ImageT<Color>::setMatrix(){
++    PixelPacket *pixels=GetImagePixels(image,0,0,cols(),rows());
+ #ifdef COLUMN_ORDER
+     for(int i=0;i<rows();++i)
+       for(int j=0;j<cols();++j){
+-	vm[j][i].r = image->pixels[i*cols()+j].red ;
+-	vm[j][i].g = image->pixels[i*cols()+j].green ;
+-	vm[j][i].b = image->pixels[i*cols()+j].blue ;
++	vm[j][i].r = pixels[i*cols()+j].red ;
++	vm[j][i].g = pixels[i*cols()+j].green ;
++	vm[j][i].b = pixels[i*cols()+j].blue ;
+       }
+ #else
+     int size=rows()*cols() ;
+     for(int i=0;i<size;++i){
+-      m[i].r = image->pixels[i].red ;
+-      m[i].g = image->pixels[i].green ;
+-      m[i].b = image->pixels[i].blue;
++      m[i].r = pixels[i].red ;
++      m[i].g = pixels[i].green ;
++      m[i].b = pixels[i].blue;
+     }
+ #endif
+   }
+   
+   void IM_ImageT<unsigned char>::setMatrix(){
++    PixelPacket *pixels=GetImagePixels(image,0,0,cols(),rows());
+ #ifdef COLUMN_ORDER
+     for(int i=0;i<rows();++i)
+       for(int j=0;j<cols();++j)
+-	vm[j][i] = image->pixels[i*cols()+j].red ;
++	vm[j][i] = pixels[i*cols()+j].red ;
+ #else
+     int size=rows()*cols() ;
+     for(int i=0;i<size;++i){
+-      m[i] = image->pixels[i].red ;
++      m[i] = pixels[i].red ;
+     }
+ #endif
+   }
+@@ -63,76 +65,73 @@
+  
+   void IM_ImageT<Color>::setImage(){
+     if(image->rows != (unsigned int)rows() || image->columns != (unsigned int)cols()){
+-      image->rows = rows() ;
+-      image->columns = cols() ;
+-      image->packets = rows()*cols() ;
+-      if(image->pixels)
+-	delete []image->pixels ;
+-      image->pixels = (RunlengthPacket*)malloc(sizeof(RunlengthPacket)*image->packets) ;
++      char *pixmem=(char*)malloc(cols()*rows()*3);
++      ExceptionInfo exc;
++      DestroyImage(image);
++      image=ConstituteImage(cols(),rows(),"RGB",CharPixel,pixmem,&exc);
++      free(pixmem);
+     }
+-    
++    PixelPacket *pixels=SetImagePixels(image,0,0,cols(),rows());
+ #ifdef COLUMN_ORDER
+     for(int i=0;i<rows();++i)
+       for(int j=0;j<cols();++j){
+-	image->pixels[i*cols()+j].red = vm[j][i].r ;
+-	image->pixels[i*cols()+j].green = vm[j][i].g ; 
+-	image->pixels[i*cols()+j].blue =  vm[j][i].b ; 
+-	image->pixels[i*cols()+j].index =  0;
+-	image->pixels[i*cols()+j].length = 0 ;
++	pixels[i*cols()+j].red = vm[j][i].r ;
++	pixels[i*cols()+j].green = vm[j][i].g ; 
++	pixels[i*cols()+j].blue =  vm[j][i].b ; 
++	pixels[i*cols()+j].opacity = 0 ;
+       }
+ #else
+     int size=rows()*cols() ;
+     for(int i=0;i<size;++i){
+-      image->pixels[i].red = m[i].r ;
+-      image->pixels[i].green = m[i].g ; 
+-      image->pixels[i].blue =  m[i].b ; 
+-      image->pixels[i].index =  0;
+-      image->pixels[i].length = 0 ;
++      pixels[i].red = m[i].r ;
++      pixels[i].green = m[i].g ; 
++      pixels[i].blue =  m[i].b ; 
++      pixels[i].opacity = 0 ;
+     }
+ #endif
++    SyncImagePixels(image);
+   }
+   
+   void IM_ImageT<unsigned char>::setImage(){
+     if(image->rows != (unsigned int)rows() || image->columns != (unsigned int)cols()){
+-      image->rows = rows() ;
+-      image->columns = cols() ;
+-      image->packets = rows()*cols() ;
+-      if(image->pixels)
+-	delete []image->pixels ;
+-      image->pixels = (RunlengthPacket*)malloc(sizeof(RunlengthPacket)*image->packets) ;
++      char *pixmem=(char*)malloc(cols()*rows()*3);
++      ExceptionInfo exc;
++      DestroyImage(image);
++      image=ConstituteImage(cols(),rows(),"RGB",CharPixel,pixmem,&exc);
++      free(pixmem);
+     }
+-    
++    PixelPacket *pixels=SetImagePixels(image,0,0,cols(),rows());
+ #ifdef COLUMN_ORDER
+     for(int i=0;i<rows();++i)
+       for(int j=0;j<cols();++j){
+-	image->pixels[i*cols()+j].red = vm[j][i] ;
+-	image->pixels[i*cols()+j].green = vm[j][i] ; 
+-	image->pixels[i*cols()+j].blue =  vm[j][i] ; 
+-	image->pixels[i*cols()+j].index =  vm[j][i] ;
+-	image->pixels[i*cols()+j].length = 0 ;
++	pixels[i*cols()+j].red = vm[j][i] ;
++	pixels[i*cols()+j].green = vm[j][i] ; 
++	pixels[i*cols()+j].blue =  vm[j][i] ; 
++	pixels[i*cols()+j].opacity = 0 ;
+       }
+ #else
+     int size=rows()*cols() ;
+     for(int i=0;i<size;++i){
+-      image->pixels[i].red = m[i] ;
+-      image->pixels[i].green = m[i] ;
+-      image->pixels[i].blue = m[i] ;
+-      image->pixels[i].index = m[i] ; 
+-      image->pixels[i].length = 0 ;
++      pixels[i].red = m[i] ;
++      pixels[i].green = m[i] ;
++      pixels[i].blue = m[i] ;
++      pixels[i].opacity = 0 ;
+     }
+ #endif
++    SyncImagePixels(image);
+   }
+   
+   
+   
+   int IM_ImageT<Color>::read(const char* filename) {
++    ExceptionInfo exc;
+     (void)strcpy(image_info.filename,filename) ;
+     if(image)
+       DestroyImage(image) ;
+-    image=ReadImage(&image_info) ;
++    image=ReadImage(&image_info,&exc) ;
+     if(!image)
+       return 0 ;
+-    UncondenseImage(image) ;
++    /*UncondenseImage(image) ;*/
+     resize(image->rows,image->columns) ;
+     
+     setMatrix() ;
+@@ -141,14 +144,15 @@
+   }
+   
+   int IM_ImageT<unsigned char>::read(const char* filename) {
++    ExceptionInfo exc;
+     (void)strcpy(image_info.filename,filename) ;
+     image_info.monochrome = 1 ;
+     if(image)
+       DestroyImage(image) ;
+-    image=ReadImage(&image_info) ;
++    image=ReadImage(&image_info,&exc) ;
+     if(!image)
+       return 0 ;
+-    UncondenseImage(image) ;
++    /*UncondenseImage(image) ;*/
+     resize(image->rows,image->columns) ;
+     
+     setMatrix() ;
+@@ -170,8 +174,6 @@
+     
+     image->rows = rows() ;
+     image->columns = cols() ;
+-    image->packets=rows()*cols() ;
+-    image->pixels = (RunlengthPacket*)malloc(sizeof(RunlengthPacket)*image->packets) ;
+     
+     setImage() ;
+     
+@@ -191,8 +193,6 @@
+     
+     image->rows = rows() ;
+     image->columns = cols() ;
+-    image->packets=rows()*cols() ;
+-    image->pixels = (RunlengthPacket*)malloc(sizeof(RunlengthPacket)*image->packets) ;
+     
+     setImage() ;
+     
