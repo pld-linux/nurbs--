@@ -5,7 +5,7 @@ Version:	3.0.11
 Release:	2
 License:	GPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/libnurbs/%{name}-%{version}.tar.bz2
+Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-templates.patch
 Patch1:		%{name}-link.patch
 Patch2:		%{name}-magick.patch
@@ -93,12 +93,6 @@ rm -f missing
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
-
-# remove unwanted paths from libtool scripts
-for f in $RPM_BUILD_ROOT%{_libdir}/lib{matrixN,matrixI,nurbsf,nurbsd}.la ; do
-	cat $f | awk '/^dependency_libs/ { gsub("-L[ \t]*[^ \t]*nurbs\+\+-[^ \t]* ","") } //' >$f.tmp
-	mv -f $f.tmp $f
-done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
