@@ -2,7 +2,7 @@ Summary:	NURBS++ library
 Summary(pl):	Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.11
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
@@ -43,8 +43,9 @@ projektów.
 Summary:	NURBS++ library development package
 Summary(pl):	Pliki nag³ówkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	ImageMagick-devel >= 5.2.9
+Requires:	libstdc++-devel
 
 %description devel
 NURBS++ library header files.
@@ -56,7 +57,7 @@ Pliki nag³ówkowe dla biblioteki NURBS++.
 Summary:	NURBS++ static library
 Summary(pl):	Statyczna wersja biblioteki NURBS++
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static version of NURBS++ library.
@@ -73,7 +74,6 @@ Statyczna wersja biblioteki NURBS++.
 %patch4 -p1
 
 %build
-rm -f missing
 %{__libtoolize}
 %{__aclocal} -I config
 %{__autoconf}
@@ -95,7 +95,8 @@ rm -f missing
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} DESTDIR=$RPM_BUILD_ROOT install
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,9 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/nurbs++-config
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
-%attr(755,root,root) %{_bindir}/nurbs++-config
 %{_includedir}/nurbs++
 %{_mandir}/man1/nurbs++-config.1*
 
