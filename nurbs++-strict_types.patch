@@ -1,0 +1,20 @@
+--- nurbs++-3.0.11/image/image_.cpp~	2004-12-12 09:12:51.000000000 +0100
++++ nurbs++-3.0.11/image/image_.cpp	2004-12-12 09:12:51.000000000 +0100
+@@ -142,7 +142,7 @@
+   int IM_ImageT<unsigned char>::read(const char* filename) {
+     ExceptionInfo exc;
+     (void)strcpy(image_info.filename,filename) ;
+-    image_info.monochrome = 1 ;
++    image_info.monochrome = MagickTrue ;
+     if(image)
+       DestroyImage(image) ;
+     image=ReadImage(&image_info,&exc) ;
+@@ -192,7 +192,7 @@
+     
+     setImage() ;
+     
+-    image_info.monochrome = 1 ;  
++    image_info.monochrome = MagickTrue ;  
+     return WriteImage(&image_info,image) ;
+   }
+ 
