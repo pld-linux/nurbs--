@@ -1,15 +1,100 @@
---- nurbs++-3.0.10/configure.in.orig	Mon Sep 13 02:40:07 1999
-+++ nurbs++-3.0.10/configure.in	Wed Mar 21 02:03:59 2001
-@@ -144,6 +144,7 @@
- 	has_magick=no
- else
- 	has_magick=yes
-+	magick_include="-I/usr/X11R6/include/X11"
- 	if test "$with_magick" != yes; then
- 	magick_include="-I"$with_magick"/include"
- 	magick_lib="-L"$with_magick"/lib"
---- nurbs++-3.0.10/image/image.hh.orig	Thu Aug  5 03:49:16 1999
-+++ nurbs++-3.0.10/image/image.hh	Wed Mar 21 04:05:49 2001
+diff -Nur nurbs++-3.0.11.orig/config/has_image_magick.m4 nurbs++-3.0.11/config/has_image_magick.m4
+--- nurbs++-3.0.11.orig/config/has_image_magick.m4	Tue May  7 21:49:27 2002
++++ nurbs++-3.0.11/config/has_image_magick.m4	Wed Jul 10 08:05:08 2002
+@@ -1,7 +1,7 @@
+ dnl WITH_IMAGE_MAGICK
+ dnl
+ dnl Wheter Image Magick is defined in this system.
+-AC_DEFUN(WITH_IMAGE_MAGICK,
++AC_DEFUN(AC_WITH_IMAGE_MAGICK,
+ [
+ AC_REQUIRE([AC_PROG_CXX])
+ AC_MSG_CHECKING(whether Image Magick's Magick++ library is present)
+@@ -10,9 +10,9 @@
+ [
+  AC_LANG_SAVE
+  AC_LANG_CPLUSPLUS
+- MAGICK_CPPFLAGS=`Magick++-config --cppflags`
+- MAGICK_LDFLAGS=`Magick++-config --ldflags`
+- MAGICK_LIBS=`Magick++-config --libs`
++ MAGICK_CPPFLAGS=`Magick-config --cppflags`
++ MAGICK_LDFLAGS=`Magick-config --ldflags`
++ MAGICK_LIBS=`Magick-config --libs`
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS $MAGICK_CPPFLAGS"
+  SAVE_LDFLAGS="$LDFLAGS"
+@@ -21,7 +21,10 @@
+  LIBS="$LIBS $MAGICK_LIBS"
+ 
+  AC_TRY_COMPILE([
+- #include <Magick++>
++ #include <stdio.h>
++ #include <time.h>
++ #include <sys/types.h>
++ #include <magick/api.h>
+  ],[return 1;],
+  has_image_magick=yes,
+  has_image_magick=no)
+@@ -33,10 +33,5 @@
+ ])
+ 
+ AC_MSG_RESULT($has_image_magick)
+-if test "$has_image_magick" = yes; then
+-   AC_DEFINE(MAGICK_CPPFLAGS)
+-   AC_DEFINE(MAGICK_LDFLAGS)
+-   AC_DEFINE(MAGICK_LIBS)
+-fi
+ ])
+ 
+diff -Nur nurbs++-3.0.11.orig/configure.in nurbs++-3.0.11/configure.in
+--- nurbs++-3.0.11.orig/configure.in	Fri May 24 20:15:49 2002
++++ nurbs++-3.0.11/configure.in	Wed Jul 10 08:03:52 2002
+@@ -151,17 +151,21 @@
+ 
+ 
+ 
+-dnl has_image_magick=no
+-dnl if test "$test_magick" = yes; then
+-	dnl WITH_IMAGE_MAGICK
+-dnl fi
++if test "$test_magick" = yes; then
++	AC_WITH_IMAGE_MAGICK
++else
++	has_image_magick=no
++fi
+ 
+ 
+-dnl if test "$has_image_magick" = yes; then
+-dnl 	option_libs=' $(MAGICK_LDFLAGS) $(MAGICK_LIBS)'
+-dnl 	option_include=' $(MAGICK_CPPFLAGS)'
+-dnl	AC_DEFINE(WITH_IMAGE_MAGICK)
+-dnl 
++if test "$has_image_magick" = yes; then
++ 	option_libs=' $(MAGICK_LDFLAGS) $(MAGICK_LIBS)'
++ 	option_include=' $(MAGICK_CPPFLAGS)'
++	AC_DEFINE([WITH_IMAGE_MAGICK])
++fi
++AC_SUBST(MAGICK_CPPFLAGS)
++AC_SUBST(MAGICK_LIBS)
++AC_SUBST(MAGICK_LDFLAGS)
+ 	
+ dnl
+ dnl setting the order to be column order
+diff -Nur nurbs++-3.0.11.orig/image/image.h nurbs++-3.0.11/image/image.h
+--- nurbs++-3.0.11.orig/image/image.h	Mon May 13 23:07:45 2002
++++ nurbs++-3.0.11/image/image.h	Wed Jul 10 08:06:04 2002
+@@ -68,7 +68,10 @@
+ 
+ #ifdef WITH_IMAGE_MAGICK
+ 
+-#include <magick/magick.h>
++#include <stdio.h>
++#include <time.h>
++#include <sys/types.h>
++#include <magick/api.h>
+ #if defined(__cplusplus) || defined(c_plusplus)
+ #undef class
+ #endif
 @@ -107,11 +107,11 @@
        int write(const char* filename) ;
        
@@ -27,8 +112,9 @@
        
        
      protected:
---- nurbs++-3.0.10/image/image_.cc.orig	Thu Aug  5 03:49:16 1999
-+++ nurbs++-3.0.10/image/image_.cc	Wed Mar 21 04:00:40 2001
+diff -Nur nurbs++-3.0.11.orig/image/image_.cpp nurbs++-3.0.11/image/image_.cpp
+--- nurbs++-3.0.11.orig/image/image_.cpp	Mon May 13 23:07:45 2002
++++ nurbs++-3.0.11/image/image_.cpp	Wed Jul 10 08:10:57 2002
 @@ -30,32 +30,34 @@
  #if defined(WITH_IMAGE_MAGICK)
  
@@ -182,7 +268,7 @@
      resize(image->rows,image->columns) ;
      
      setMatrix() ;
-@@ -141,14 +144,15 @@
+@@ -141,14 +140,15 @@
    }
    
    int IM_ImageT<unsigned char>::read(const char* filename) {
@@ -200,7 +286,7 @@
      resize(image->rows,image->columns) ;
      
      setMatrix() ;
-@@ -170,8 +174,6 @@
+@@ -170,8 +170,6 @@
      
      image->rows = rows() ;
      image->columns = cols() ;
@@ -209,7 +295,7 @@
      
      setImage() ;
      
-@@ -191,8 +193,6 @@
+@@ -191,8 +189,6 @@
      
      image->rows = rows() ;
      image->columns = cols() ;
@@ -218,3 +304,25 @@
      
      setImage() ;
      
+--- nurbs++-3.0.11/image/filter.cpp.orig	Thu Jul 11 00:30:51 2002
++++ nurbs++-3.0.11/image/filter.cpp	Thu Jul 11 00:30:14 2002
+@@ -27,7 +27,7 @@
+ #define FILTER_SOURCES
+ 
+ #include "filter.h"
+-#include "vector.h"
++#include "../matrix/vector.h"
+ 
+ /*!
+  */
+--- nurbs++-3.0.11/nurbs/Makefile.am.orig	Thu Jul 11 00:31:17 2002
++++ nurbs++-3.0.11/nurbs/Makefile.am	Thu Jul 11 00:38:38 2002
+@@ -2,7 +2,7 @@
+ 
+ MAGICK_INCLUDE =  $(X_CFLAGS) @MAGICK_CPPFLAGS@
+ 
+-INCLUDES = $(MAGICK_INCLUDE) -I@top_srcdir@/include @matrix_include@ $(GL_CFLAGS)
++INCLUDES = -I@top_srcdir@/include @matrix_include@ $(MAGICK_INCLUDE) $(GL_CFLAGS)
+ 
+ pkginclude_HEADERS = curve.h matrixRT.h nurbsSub.h hnurbs.h nurbs.h nurbs_sp.h hnurbsS.h nurbsGL.h surface.h hnurbsS_sp.h nurbsS.h nurbsS_sp.h tri_spline.h nurbs_global.h
+ 

@@ -1,0 +1,13 @@
+--- nurbs++-3.0.11/nurbs++-config.in.orig	Tue May  7 20:34:01 2002
++++ nurbs++-3.0.11/nurbs++-config.in	Wed Jul 10 23:55:57 2002
+@@ -88,9 +88,8 @@
+ 
+ if test "$echo_libs" = "yes"; then
+       if test @libdir@ != /usr/lib ; then
+-            my_linker_flags="-L@libdir@"
++            echo -L@libdir@
+       fi
+-      echo ${my_linker_flags} -lcppunit
+ fi      
+ 
+ 

@@ -1,27 +1,29 @@
 Summary:	NURBS++ library
 Summary(pl):	Biblioteka NURBS++
 Name:		nurbs++
-Version:	3.0.10
-Release:	3
+Version:	3.0.11
+Release:	1
 License:	GPL
 Group:		X11/Libraries
-Source0:	ftp://download.sourceforge.net/pub/sourceforge/libnurbs/%{name}-%{version}.tar.bz2
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/libnurbs/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-templates.patch
-Patch1:		%{name}-magick.patch
-Patch2:		%{name}-link.patch
-URL:		http://yukon.genie.uottawa.ca/~lavoie/software/nurbs/
+Patch1:		%{name}-link.patch
+Patch2:		%{name}-magick.patch
+Patch3:		%{name}-config.patch
+URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 3.3.6
 BuildRequires:	ImageMagick-devel >= 5.2.9
 BuildRequires:	libstdc++-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool
+#BuildRequires:	libtool
 Requires:	OpenGL
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define 	_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 
 %description
 Non-Uniform Rational B-Splines (NURBS) curves and surface are
@@ -66,10 +68,11 @@ Statyczna wersja biblioteki NURBS++.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
-%{__libtoolize}
-aclocal
+#%{__libtoolize}
+aclocal -I config
 %{__autoconf}
 %{__automake}
 %configure \
@@ -111,7 +114,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/lib*.la
+%attr(755,root,root) %{_bindir}/nurbs++-config
 %{_includedir}/nurbs++
+%{_mandir}/man1/nurbs++-config.1*
 
 %files static
 %defattr(644,root,root,755)
