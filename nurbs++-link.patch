@@ -74,7 +74,7 @@ diff -Nur nurbs++-3.0.10.orig/image/Makefile.am nurbs++-3.0.10/image/Makefile.am
  lib_LTLIBRARIES = libmatrixI.la
  libmatrixI_la_SOURCES = color.cc image_.cc  rec_filter_.cc filter_.cc
 -libmatrixI_la_LDFLAGS = -version-info 1:0:0
-+libmatrixI_la_LDFLAGS = -version-info 1:0:0 -L../matrix/.libs -lmatrix @magick_lib@ @magick_libs@
++libmatrixI_la_LDFLAGS = -version-info 1:0:0 -L../matrix -lmatrix @magick_lib@ @magick_libs@
 diff -Nur nurbs++-3.0.10.orig/numerical/Makefile.am nurbs++-3.0.10/numerical/Makefile.am
 --- nurbs++-3.0.10.orig/numerical/Makefile.am	Thu Aug  5 03:49:16 1999
 +++ nurbs++-3.0.10/numerical/Makefile.am	Wed Mar 21 12:21:07 2001
@@ -83,7 +83,7 @@ diff -Nur nurbs++-3.0.10.orig/numerical/Makefile.am nurbs++-3.0.10/numerical/Mak
  lib_LTLIBRARIES = libmatrixN.la
  libmatrixN_la_SOURCES = matrixMat_.cc fft_.cc chebexp_.cc intccq_.cc statistic_.cc
 -libmatrixN_la_LDFLAGS = -version-info 1:0:0
-+libmatrixN_la_LDFLAGS = -version-info 1:0:0 -L../matrix/.libs -lmatrix
++libmatrixN_la_LDFLAGS = -version-info 1:0:0 -L../matrix -lmatrix
  
 diff -Nur nurbs++-3.0.10.orig/nurbs/Makefile.am nurbs++-3.0.10/nurbs/Makefile.am
 --- nurbs++-3.0.10.orig/nurbs/Makefile.am	Thu Aug  5 03:49:16 1999
@@ -93,7 +93,7 @@ diff -Nur nurbs++-3.0.10.orig/nurbs/Makefile.am nurbs++-3.0.10/nurbs/Makefile.am
  double_sources = d_nurbs.cc d_nurbsS.cc d_curve.cc d_surface.cc d_hnurbsS.cc matrixRT.cc d_nurbs_sp.cc d_nurbsS_sp.cc d_hnurbsS_sp.cc d_nurbsArray.cc  d_nurbsSub.cc d_tri_spline.cc
  
 -ldflags = -version-info 1:0:1
-+ldflags = -version-info 1:0:1 -L../matrix/.libs -lmatrix -L../image/.libs -lmatrixI -L../numerical/.libs -lmatrixN
++ldflags = -version-info 1:0:1 -L../matrix -lmatrix -L../image -lmatrixI -L../numerical -lmatrixN
  
  #EXTRA_LTLIBRARIES = libnurbsf.la libnurbsd.la
  #lib_LTLIBRARIES = @build_lib@

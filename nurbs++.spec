@@ -2,7 +2,7 @@ Summary:	NURBS++ library
 Summary(pl):	Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.10
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
@@ -75,6 +75,7 @@ Statyczna wersja biblioteki NURBS++.
 %patch2 -p1
 
 %build
+libtoolize --copy --force
 aclocal
 autoconf
 automake -a -c
@@ -99,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # remove unwanted paths from libtool scripts
 for f in $RPM_BUILD_ROOT%{_libdir}/lib{matrixN,matrixI,nurbsf,nurbsd}.la ; do
-	cat $f | awk '/^dependency_libs/ { gsub("-L[ \t]*[^ \t]*/\.libs ","") } //' >$f.tmp
+	cat $f | awk '/^dependency_libs/ { gsub("-L[ \t]*[^ \t]*nurbs\+\+-[^ \t]* ","") } //' >$f.tmp
 	mv -f $f.tmp $f
 done
 
@@ -117,8 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/lib*.la
-%attr(644,root,root) %{_includedir}/nurbs++
+%{_includedir}/nurbs++
 
 %files static
 %defattr(644,root,root,755)
-%attr(644,root,root) %{_libdir}/lib*.a
+%{_libdir}/lib*.a
