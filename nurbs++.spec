@@ -20,7 +20,7 @@ Patch5:		%{name}-strict_types.patch
 URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	ImageMagick-devel >= 1:6.2.4.0
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel >= 3.3.6
+BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 %if %{with cppunit}
