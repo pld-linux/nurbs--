@@ -1601,7 +1601,7 @@
  
 -template class std::allocator<PLib::NurbsCurve<float, 2> *>;
 -
--template void std::_List_base<PLib::NurbsCurve<float, 2> *, std::allocator<PLib::NurbsCurve<float, 2> *> >::__clear(void);
+-template void  std::_List_base<PLib::NurbsCurve<float, 2> *, std::allocator<PLib::NurbsCurve<float, 2> *> >::clear(void);
 -
 -template void std::list<NurbsCurve_2Df*>::clear(void);
 -
