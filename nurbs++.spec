@@ -14,9 +14,8 @@ Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-magick.patch
 Patch2:		%{name}-config.patch
-Patch3:		%{name}-gcc33.patch
-Patch4:		%{name}-strict_types.patch
-Patch5:		%{name}-gcc4.patch
+Patch3:		%{name}-strict_types.patch
+Patch4:		%{name}-gcc4.patch
 URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	ImageMagick-devel >= 1:6.2.4.0
 BuildRequires:	OpenGL-GLU-devel
@@ -79,7 +78,6 @@ Statyczna wersja biblioteki NURBS++.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %build
 %{__libtoolize}
