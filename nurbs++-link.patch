@@ -6,7 +6,7 @@ diff -Nur nurbs++-3.0.11.orig/config/has_opengl.m4 nurbs++-3.0.11/config/has_ope
              GL_LFLAGS="-L${ac_cv_with_gl_lib}"
          fi
 -	GL_LIBS="-lGLU -lGL $X_PRE_LIBS -lXext -lm"
-+	GL_LIBS="-L/usr/X11R6/lib -lGLU -lGL $X_PRE_LIBS -lXext -lm"
++	GL_LIBS="-lGLU -lGL"
          AC_SUBST(GL_LIBS)
  	AC_SUBST(GL_LFLAGS)
      ],
@@ -15,7 +15,7 @@ diff -Nur nurbs++-3.0.11.orig/config/has_opengl.m4 nurbs++-3.0.11/config/has_ope
              GL_LFLAGS="-L${ac_cv_with_gl_lib}"
          fi
 -	GL_LIBS="-lMesaGLU -lMesaGL -lXext -lm"
-+	GL_LIBS="-L/usr/X11R6/lib -lMesaGLU -lMesaGL -lXext -lm"
++	GL_LIBS="-lMesaGLU -lMesaGL"
  	AC_SUBST(GL_LFLAGS)
          AC_SUBST(GL_LIBS)
      ],
@@ -50,3 +50,13 @@ diff -Nur nurbs++-3.0.11.orig/nurbs/Makefile.am nurbs++-3.0.11/nurbs/Makefile.am
  libnurbsd_la_LDFLAGS = $(ldflags)
 -
 +libnurbsd_la_LIBADD = ../matrix/libmatrix.la ../image/libmatrixI.la ../numerical/libmatrixN.la
+--- nurbs++-3.0.11/examples/image/Makefile.am.orig	2002-05-22 19:15:54.000000000 +0200
++++ nurbs++-3.0.11/examples/image/Makefile.am	2006-04-14 20:35:45.731096250 +0200
+@@ -1,5 +1,5 @@
+-MAGICK_INCLUDE =  $(X_CFLAGS) @magick_include@
+-MAGICK_LIB = $(X_PRE_LIBS) @magick_lib@ $(X_LIBS) -lXt -lX11
++MAGICK_INCLUDE =  @magick_include@
++MAGICK_LIB = @magick_lib@
+ 
+ LAPACKLIBS = @lapack_libs@
+ COMPLEXLIB = @complex_lib@
