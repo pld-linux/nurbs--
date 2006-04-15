@@ -11,24 +11,23 @@ License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
 # Source0-md5:	11aa7f2a1ae2bc3e2671d56f557fbbbf
-Patch0:		%{name}-templates.patch
-Patch1:		%{name}-link.patch
-Patch2:		%{name}-magick.patch
-Patch3:		%{name}-config.patch
-Patch4:		%{name}-gcc33.patch
-Patch5:		%{name}-strict_types.patch
+Patch0:		%{name}-link.patch
+Patch1:		%{name}-magick.patch
+Patch2:		%{name}-config.patch
+Patch3:		%{name}-gcc33.patch
+Patch4:		%{name}-strict_types.patch
+Patch5:		%{name}-gcc4.patch
 URL:		http://libnurbs.sourceforge.net/
 BuildRequires:	ImageMagick-devel >= 1:6.2.4.0
-BuildRequires:	OpenGL-devel
-BuildRequires:	xorg-lib-libX11-devel
-BuildRequires:	autoconf
+BuildRequires:	OpenGL-GLU-devel
+BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 %if %{with cppunit}
 BuildRequires:	cppunit-devel
 %endif
-BuildRequires:	libstdc++-devel
+BuildRequires:	libstdc++-devel >= 5:3.4
 BuildRequires:	libtool >= 2:1.4d-3
-Requires:	OpenGL
+BuildRequires:	xorg-lib-libX11-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define 	_noautoreqdep	libGL.so.1 libGLU.so.1
@@ -52,8 +51,8 @@ Summary:	NURBS++ library development package
 Summary(pl):	Pliki nag³ówkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	ImageMagick-devel >= 5.2.9
-Requires:	libstdc++-devel
+Requires:	ImageMagick-devel >= 1:6.2.4.0
+Requires:	libstdc++-devel >= 5:3.4
 
 %description devel
 NURBS++ library header files.
@@ -91,16 +90,16 @@ Statyczna wersja biblioteki NURBS++.
 export has_cppunit=no
 %endif
 %configure \
+	--disable-debug \
+	--enable-double \
+	--enable-exception \
+	--enable-float \
+	--enable-library \
 	--enable-shared \
 	--enable-static \
-	--enable-exception \
-	--enable-library \
-	--with-x \
-	--enable-float \
-	--enable-double \
-	--with-opengl \
 	--with-magick \
-	--disable-debug
+	--with-opengl \
+	--with-x
 
 %{__make}
 
