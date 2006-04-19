@@ -2742,3 +2742,25 @@
    double SurfSample<double>::epsilon = 1e-6 ;
  
    template void DrawSubdivision( NurbSurface<double> *, double tolerance );
+--- nurbs++-3.0.11/nurbs/nurbsGL.cpp.orig	2006-04-18 20:34:19.000000000 +0200
++++ nurbs++-3.0.11/nurbs/nurbsGL.cpp	2006-04-19 16:29:35.000000000 +0200
+@@ -27,6 +27,7 @@
+ #include <string.h>
+ #include <stdio.h>
+ #include <iostream.h> 
++#include <ext/mt_allocator.h>
+ 
+ #ifdef WITH_OPENGL
+ 
+@@ -3949,9 +3950,9 @@
+ 
+ template void std::_List_base<PLib::NurbsCurve<float, 2> *, std::allocator<PLib::NurbsCurve<float, 2> *> >::_M_clear(void);
+ 
+-template void __gnu_cxx::__mt_alloc<std::_List_node<PLib::NurbsCurve<float, 2>*>, __gnu_cxx::__common_pool_policy<__gnu_cxx::__pool, true> >::deallocate(std::_List_node<PLib::NurbsCurve<float, 2>*>*, unsigned int);
++template void __gnu_cxx::__mt_alloc<std::_List_node<PLib::NurbsCurve<float, 2>*>, __gnu_cxx::__common_pool_policy<__gnu_cxx::__pool, true> >::deallocate(std::_List_node<PLib::NurbsCurve<float, 2>*>*, std::size_t);
+ 
+-template std::_List_node<PLib::NurbsCurve<float, 2>*>* __gnu_cxx::__mt_alloc<std::_List_node<PLib::NurbsCurve<float, 2>*>, __gnu_cxx::__common_pool_policy<__gnu_cxx::__pool, true> >::allocate(unsigned int, void const*);
++template std::_List_node<PLib::NurbsCurve<float, 2>*>* __gnu_cxx::__mt_alloc<std::_List_node<PLib::NurbsCurve<float, 2>*>, __gnu_cxx::__common_pool_policy<__gnu_cxx::__pool, true> >::allocate(std::size_t, void const*);
+ 
+ #endif
+ 
