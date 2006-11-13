@@ -84,7 +84,7 @@ Statyczna wersja biblioteki NURBS++.
 %{__aclocal} -I config
 %{__autoconf}
 %{__automake}
-%if %{without cppunit}
+%if !%{with cppunit}
 export has_cppunit=no
 %endif
 %configure \
