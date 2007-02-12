@@ -3,7 +3,7 @@
 %bcond_with	cppunit	# use cppunit; doesn't build with current cppunit
 #
 Summary:	NURBS++ library
-Summary(pl):	Biblioteka NURBS++
+Summary(pl.UTF-8):   Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.11
 Release:	8
@@ -38,16 +38,16 @@ surfaces. This C++ library hides the basic mathematics of NURBS. This
 allows the user to focus on the more challenging parts of their
 projects.
 
-%description -l pl
+%description -l pl.UTF-8
 Wymierne krzywe i powierzchnie sklejane NURBS (Non-Uniform Rational
-B-Splines) s± funkcjami, ktÛre mog± przedstawiaÊ dowolny rodzaj
-krzywych lub powierzchni. Ta biblioteka C++ zawiera czÍ∂Ê matematyczn±
-tych funkcji. Pozwala programi∂cie skupiÊ siÍ na innych czÍ∂ciach
-projektÛw.
+B-Splines) sƒÖ funkcjami, kt√≥re mogƒÖ przedstawiaƒá dowolny rodzaj
+krzywych lub powierzchni. Ta biblioteka C++ zawiera czƒô≈õƒá matematycznƒÖ
+tych funkcji. Pozwala programi≈õcie skupiƒá siƒô na innych czƒô≈õciach
+projekt√≥w.
 
 %package devel
 Summary:	NURBS++ library development package
-Summary(pl):	Pliki nag≥Ûwkowe biblioteki NURBS++
+Summary(pl.UTF-8):   Pliki nag≈Ç√≥wkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	ImageMagick-devel >= 1:6.2.4.0
@@ -56,19 +56,19 @@ Requires:	libstdc++-devel >= 5:3.4
 %description devel
 NURBS++ library header files.
 
-%description devel -l pl
-Pliki nag≥Ûwkowe dla biblioteki NURBS++.
+%description devel -l pl.UTF-8
+Pliki nag≈Ç√≥wkowe dla biblioteki NURBS++.
 
 %package static
 Summary:	NURBS++ static library
-Summary(pl):	Statyczna wersja biblioteki NURBS++
+Summary(pl.UTF-8):   Statyczna wersja biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static version of NURBS++ library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna wersja biblioteki NURBS++.
 
 %prep
