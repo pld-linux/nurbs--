@@ -3,7 +3,7 @@
 %bcond_with	cppunit	# use cppunit; doesn't build with current cppunit
 #
 Summary:	NURBS++ library
-Summary(pl.UTF-8):   Biblioteka NURBS++
+Summary(pl.UTF-8):	Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.11
 Release:	8
@@ -47,7 +47,7 @@ projektów.
 
 %package devel
 Summary:	NURBS++ library development package
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki NURBS++
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	ImageMagick-devel >= 1:6.2.4.0
@@ -61,7 +61,7 @@ Pliki nagłówkowe dla biblioteki NURBS++.
 
 %package static
 Summary:	NURBS++ static library
-Summary(pl.UTF-8):   Statyczna wersja biblioteki NURBS++
+Summary(pl.UTF-8):	Statyczna wersja biblioteki NURBS++
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
