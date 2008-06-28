@@ -6,7 +6,7 @@ Summary:	NURBS++ library
 Summary(pl.UTF-8):	Biblioteka NURBS++
 Name:		nurbs++
 Version:	3.0.11
-Release:	8
+Release:	9
 License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/libnurbs/%{name}-%{version}.tar.bz2
